@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Route, Routes, Navigate } from 'react-router-dom';
 import Header from '../components/Header'
 import Main from '../components/Main'
 import Footer from '../components/Footer'
@@ -9,6 +10,9 @@ import Card from './Card'
 import EditProfilePopup from './EditProfilePopup'
 import EditAvatarPopup from './EditAvatarPopup'
 import AddPlacePopup from './AddPlacePopup'
+import Login from './Login'
+import Register from './Register'
+import ProtectedRouteElemeent from './ProtectedRoute'
 import CurrentUserContext from '../contexts/CurrentUserContext'
 
 function App() {
@@ -20,6 +24,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState(null);
 
   const [currentUser, setCurrentUser] = useState('');
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     // Функция для выполнения запросов к API
@@ -127,9 +132,10 @@ function App() {
   return (
     <>
       <CurrentUserContext.Provider value={currentUser}>
-          <div className="center-pos">
-            <Header />
-            <Main
+        <div className="center-pos">
+          <Header />
+          <Routes>
+            <Route path="/" element={loggedIn ? <Main
               onEditAvatar={handleEditAvatarClick}
               onEditProfile={handleEditProfileClick}
               onAddPlace={handleAddPlaceClick}
@@ -142,9 +148,12 @@ function App() {
                   onCardClick={handleCardClick}
                 />
               ))}
-            />
-            <Footer />
-          </div>
+            /> : <Navigate to='/sign-in' replace />} />
+            <Route path="/sign-in" element={<Login />} />
+            <Route path="/sign-up" element={loggedIn ? <Register /> : <Navigate to='/sign-in' replace />} />
+          </Routes>
+          <Footer />
+        </div>
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}

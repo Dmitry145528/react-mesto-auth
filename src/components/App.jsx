@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Header from '../components/Header'
 import Main from '../components/Main'
 import Footer from '../components/Footer'
@@ -133,7 +133,7 @@ function App() {
     <>
       <CurrentUserContext.Provider value={currentUser}>
         <div className="center-pos">
-          <Header />
+          <Header link={'Регистрация'} />
           <Routes>
             <Route path="/" element={<ProtectedRouteElement element={Main}
               onEditAvatar={handleEditAvatarClick}

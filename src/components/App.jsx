@@ -12,7 +12,7 @@ import EditAvatarPopup from './EditAvatarPopup'
 import AddPlacePopup from './AddPlacePopup'
 import Login from './Login'
 import Register from './Register'
-import ProtectedRouteElemeent from './ProtectedRoute'
+import ProtectedRouteElement from './ProtectedRoute'
 import CurrentUserContext from '../contexts/CurrentUserContext'
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState(null);
 
   const [currentUser, setCurrentUser] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(!false);
 
   useEffect(() => {
     // Функция для выполнения запросов к API
@@ -135,7 +135,7 @@ function App() {
         <div className="center-pos">
           <Header />
           <Routes>
-            <Route path="/" element={loggedIn ? <Main
+            <Route path="/" element={<ProtectedRouteElement element={Main}
               onEditAvatar={handleEditAvatarClick}
               onEditProfile={handleEditProfileClick}
               onAddPlace={handleAddPlaceClick}
@@ -148,9 +148,9 @@ function App() {
                   onCardClick={handleCardClick}
                 />
               ))}
-            /> : <Navigate to='/sign-in' replace />} />
+              loggedIn={loggedIn} />} />
             <Route path="/sign-in" element={<Login />} />
-            <Route path="/sign-up" element={loggedIn ? <Register /> : <Navigate to='/sign-in' replace />} />
+            <Route path="/sign-up" element={<ProtectedRouteElement element={Register} loggedIn={loggedIn} />} />
           </Routes>
           <Footer />
         </div>

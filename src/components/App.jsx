@@ -24,7 +24,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState(null);
 
   const [currentUser, setCurrentUser] = useState('');
-  const [loggedIn, setLoggedIn] = useState(!false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     // Функция для выполнения запросов к API
@@ -133,7 +133,7 @@ function App() {
     <>
       <CurrentUserContext.Provider value={currentUser}>
         <div className="center-pos">
-          <Header link={'Регистрация'} />
+          <Header />
           <Routes>
             <Route path="/" element={<ProtectedRouteElement element={Main}
               onEditAvatar={handleEditAvatarClick}
@@ -150,7 +150,7 @@ function App() {
               ))}
               loggedIn={loggedIn} />} />
             <Route path="/sign-in" element={<Login />} />
-            <Route path="/sign-up" element={<ProtectedRouteElement element={Register} loggedIn={loggedIn} />} />
+            <Route path="/sign-up" element={<Register />} />
           </Routes>
           <Footer />
         </div>

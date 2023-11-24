@@ -51,3 +51,5 @@
   @import url('./blocks/authentication/__button/auth__button.css');
   @import url('./blocks/authentication/__caption/auth____caption.css');
   @import url('./blocks/authentication/__caption-link/auth__caption-link.css');
+  @import url('./blocks/infoTooltip/__container/infoTooltip__container.css');
+  @import url('./blocks/infoTooltip/__title/infoTooltip__title.css');

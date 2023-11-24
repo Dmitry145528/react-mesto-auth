@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom'
 import Header from '../components/Header'
 import Main from '../components/Main'
 import Footer from '../components/Footer'
@@ -13,6 +13,7 @@ import AddPlacePopup from './AddPlacePopup'
 import Login from './Login'
 import Register from './Register'
 import ProtectedRouteElement from './ProtectedRoute'
+import InfoToolTip from './InfoTooltip'
 import CurrentUserContext from '../contexts/CurrentUserContext'
 
 function App() {
@@ -166,6 +167,9 @@ function App() {
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar} />
+        {/* <InfoToolTip 
+          isLoggedIn={loggedIn}
+          onClose={closeAllPopups} /> */}
       </CurrentUserContext.Provider>
       <PopupWithForm
         title="Вы уверены?"

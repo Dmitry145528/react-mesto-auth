@@ -1,4 +1,4 @@
-.header__link{
+.header__link {
   font-family: 'Inter', Arial, Helvetica, sans-serif;
   color: #FFF;
   font-family: Inter;
@@ -7,6 +7,11 @@
   font-weight: 400;
   line-height: 22px;
   text-decoration: none;
+  max-height: 22px;
+}
+
+.header__link:hover {
+  opacity: 0.6;
 }
 
 @media screen and (max-width: 880px) {

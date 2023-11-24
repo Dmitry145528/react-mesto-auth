@@ -25,6 +25,8 @@ function App() {
   const [selectedCard, setSelectedCard] = useState(null);
 
   const [currentUser, setCurrentUser] = useState('');
+
+  const [email, setEmail] = useState('dima.demon.net@mail.ru');
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -123,6 +125,11 @@ function App() {
       })
   }
 
+  const handleLogin = () => {
+    setLoggedIn(!loggedIn);
+    console.log(loggedIn);
+  }
+
   const closeAllPopups = () => {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
@@ -134,7 +141,7 @@ function App() {
     <>
       <CurrentUserContext.Provider value={currentUser}>
         <div className="center-pos">
-          <Header />
+          <Header email={email} />
           <Routes>
             <Route path="/" element={<ProtectedRouteElement element={Main}
               onEditAvatar={handleEditAvatarClick}
@@ -148,9 +155,9 @@ function App() {
                   onCardLike={handleCardLike}
                   onCardClick={handleCardClick}
                 />
-              ))}
-              loggedIn={loggedIn} />} />
-            <Route path="/sign-in" element={<Login />} />
+              ))} 
+              loggedIn={loggedIn}/>} />
+            <Route path="/sign-in" element={<Login handleLogin={handleLogin} />} />
             <Route path="/sign-up" element={<Register />} />
           </Routes>
           <Footer />

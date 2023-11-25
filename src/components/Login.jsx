@@ -24,11 +24,11 @@ function Login(props) {
     e.preventDefault();
     if (formValue.password && formValue.email) {
       const { password, email } = formValue;
-      Auth.authorize(password, email)
+      Auth.onLogin(password, email)
         .then((data) => {
           if (data.token) {
             setFormValue({ password: '', email: '' });
-            props.handleLogin();
+            props.onLogin();
             navigate('/', { replace: true });
           }
         })

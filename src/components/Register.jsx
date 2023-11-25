@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react"
-import * as Auth from  "./Auth"
+import * as Auth from "./Auth"
 
 function Register() {
 
@@ -24,7 +24,8 @@ function Register() {
     e.preventDefault();
     if (formValue.password && formValue.email) {
       const { password, email } = formValue;
-      Auth.register(password, email).then(() => {
+      Auth.register(password, email).then((res) => {
+        console.log(res);
         navigate('/sign-in', { replace: true });
       }
       );

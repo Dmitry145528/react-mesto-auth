@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
 import Main from '../components/Main'
 import Footer from '../components/Footer'
@@ -13,6 +13,7 @@ import AddPlacePopup from './AddPlacePopup'
 import Login from './Login'
 import Register from './Register'
 import ProtectedRouteElement from './ProtectedRoute'
+import { checkToken } from './Auth'
 import InfoToolTip from './InfoTooltip'
 import CurrentUserContext from '../contexts/CurrentUserContext'
 
@@ -26,8 +27,9 @@ function App() {
 
   const [currentUser, setCurrentUser] = useState('');
 
-  const [email, setEmail] = useState('dima.demon.net@mail.ru');
+  const [email, setEmail] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
+  const history = useNavigate();
 
   useEffect(() => {
     // Функция для выполнения запросов к API
@@ -35,7 +37,7 @@ function App() {
 
       Promise.all([
         api.getProfileInfo(),
-        api.getInitialCards()
+        api.getInitialCards(),
       ])
         .then(([userData, initialCards]) => {
           setCurrentUser(userData);
@@ -48,6 +50,30 @@ function App() {
 
     fetchData(); // Вызов функции
   }, []);
+
+  useEffect(() => {
+    // Функция для выполнения запросов к API
+    const tokenCheck = () => {
+
+      if (localStorage.getItem('token')) {
+        const token = localStorage.getItem('token');
+
+        if (token) {
+          // проверим токен
+          checkToken(token).then((res) => {
+            if (res) {
+              // авторизуем пользователя
+              setEmail(res.data.email);
+              onLogin();
+              history('/');
+            }
+          });
+        }
+      }
+    }
+
+    tokenCheck();
+  }, [history]);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
@@ -125,7 +151,7 @@ function App() {
       })
   }
 
-  const handleLogin = () => {
+  const onLogin = () => {
     setLoggedIn(true);
   }
 
@@ -154,9 +180,9 @@ function App() {
                   onCardLike={handleCardLike}
                   onCardClick={handleCardClick}
                 />
-              ))} 
-              loggedIn={loggedIn}/>} />
-            <Route path="/sign-in" element={<Login handleLogin={handleLogin} />} />
+              ))}
+              loggedIn={loggedIn} />} />
+            <Route path="/sign-in" element={<Login onLogin={onLogin} />} />
             <Route path="/sign-up" element={<Register />} />
           </Routes>
           <Footer />

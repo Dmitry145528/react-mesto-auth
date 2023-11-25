@@ -24,7 +24,7 @@ function Header(props) {
 			return "Регистрация";
 		}
 		// По умолчанию, возвращаем "Ошибка" для всех остальных случаев
-		return console.log("Ошибка");
+		return console.log("Ошибка текста ссылки");
 	};
 
 	const getLinkTo = () => {

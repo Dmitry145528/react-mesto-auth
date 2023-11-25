@@ -33,6 +33,26 @@ function App() {
 
   useEffect(() => {
     // Функция для выполнения запросов к API
+    const fetchData = () => {
+
+      Promise.all([
+        api.getProfileInfo(),
+        api.getInitialCards(),
+      ])
+        .then(([userData, initialCards]) => {
+          setCurrentUser(userData);
+          setCards(initialCards);
+        })
+        .catch(err => {
+          console.error('Ошибка при запросе к API:', err);
+        });
+    };
+    // tokenCheck();
+    fetchData(); // Вызов функции
+  }, []);
+
+  useEffect(() => {
+    // Функция для выполнения запросов к API
     const tokenCheck = () => {
 
       if (localStorage.getItem('token')) {
@@ -52,23 +72,8 @@ function App() {
       }
     }
 
-    const fetchData = () => {
-
-      Promise.all([
-        api.getProfileInfo(),
-        api.getInitialCards(),
-      ])
-        .then(([userData, initialCards]) => {
-          setCurrentUser(userData);
-          setCards(initialCards);
-        })
-        .catch(err => {
-          console.error('Ошибка при запросе к API:', err);
-        });
-    };
     tokenCheck();
-    fetchData(); // Вызов функции
-  }, []);
+  }, [loggedIn]);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
@@ -177,8 +182,8 @@ function App() {
                 />
               ))}
               loggedIn={loggedIn} />} />
-            <Route path="/sign-in" element={<Login onLogin={onLogin} />} />
-            <Route path="/sign-up" element={<Register />} />
+            <Route path="sign-in" element={<Login onLogin={onLogin} />} />
+            <Route path="sign-up" element={<Register />} />
           </Routes>
           <Footer />
         </div>

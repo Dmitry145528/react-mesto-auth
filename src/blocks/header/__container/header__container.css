@@ -3,3 +3,9 @@
   align-items: center;
   column-gap: 24px;
 }
+
+@media screen and (max-width: 768px) {
+  .header__container {
+      margin-right: 27px;
+  }
+}

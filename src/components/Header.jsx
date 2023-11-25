@@ -44,7 +44,7 @@ function Header(props) {
 				<div className="header__container">
 					<p className="header__info">{props.email}</p>
 					<button className="header__button" onClick={onSignOut}>
-						Выход
+						Выйти
 					</button>
 				</div>
 			) : (

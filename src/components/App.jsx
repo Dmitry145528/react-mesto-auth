@@ -33,26 +33,6 @@ function App() {
 
   useEffect(() => {
     // Функция для выполнения запросов к API
-    const fetchData = () => {
-
-      Promise.all([
-        api.getProfileInfo(),
-        api.getInitialCards(),
-      ])
-        .then(([userData, initialCards]) => {
-          setCurrentUser(userData);
-          setCards(initialCards);
-        })
-        .catch(err => {
-          console.error('Ошибка при запросе к API:', err);
-        });
-    };
-
-    fetchData(); // Вызов функции
-  }, []);
-
-  useEffect(() => {
-    // Функция для выполнения запросов к API
     const tokenCheck = () => {
 
       if (localStorage.getItem('token')) {
@@ -72,8 +52,23 @@ function App() {
       }
     }
 
+    const fetchData = () => {
+
+      Promise.all([
+        api.getProfileInfo(),
+        api.getInitialCards(),
+      ])
+        .then(([userData, initialCards]) => {
+          setCurrentUser(userData);
+          setCards(initialCards);
+        })
+        .catch(err => {
+          console.error('Ошибка при запросе к API:', err);
+        });
+    };
     tokenCheck();
-  }, [history]);
+    fetchData(); // Вызов функции
+  }, []);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);

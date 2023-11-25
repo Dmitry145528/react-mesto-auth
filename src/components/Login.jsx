@@ -23,13 +23,18 @@ function Login(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formValue.password && formValue.email) {
-      Auth.authorize(formValue.password, formValue.email)
-        .then(() => {
+      const { password, email } = formValue;
+      Auth.authorize(password, email)
+        .then((data) => {
+          if (data.token) {
             setFormValue({ password: '', email: '' });
             props.handleLogin();
             navigate('/', { replace: true });
           }
-        );
+        })
+        .catch(err => console.log(err));
+    } else {
+      return;
     }
   }
 

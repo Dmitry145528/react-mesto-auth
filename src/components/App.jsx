@@ -126,8 +126,7 @@ function App() {
   }
 
   const handleLogin = () => {
-    setLoggedIn(!loggedIn);
-    console.log(loggedIn);
+    setLoggedIn(true);
   }
 
   const closeAllPopups = () => {

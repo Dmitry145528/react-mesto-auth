@@ -13,14 +13,15 @@ import AddPlacePopup from './AddPlacePopup'
 import Login from './Login'
 import Register from './Register'
 import ProtectedRouteElement from './ProtectedRoute'
-import { checkToken } from '../utils/Auth'
 import InfoToolTip from './InfoTooltip'
+import { checkToken } from '../utils/Auth'
 import CurrentUserContext from '../contexts/CurrentUserContext'
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isRegistrationPopupOpen, setIsRegistrationPopupOpen] = useState(false);
 
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
@@ -29,27 +30,8 @@ function App() {
 
   const [email, setEmail] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
+  const [loginStatus, setLoginStatus] = useState(null);
   const history = useNavigate();
-
-  useEffect(() => {
-    // Функция для выполнения запросов к API
-    const fetchData = () => {
-
-      Promise.all([
-        api.getProfileInfo(),
-        api.getInitialCards(),
-      ])
-        .then(([userData, initialCards]) => {
-          setCurrentUser(userData);
-          setCards(initialCards);
-        })
-        .catch(err => {
-          console.error('Ошибка при запросе к API:', err);
-        });
-    };
-
-    fetchData(); // Вызов функции
-  }, []);
 
   useEffect(() => {
     // Функция для выполнения запросов к API
@@ -72,7 +54,23 @@ function App() {
       }
     }
 
+    const fetchData = () => {
+
+      Promise.all([
+        api.getProfileInfo(),
+        api.getInitialCards(),
+      ])
+        .then(([userData, initialCards]) => {
+          setCurrentUser(userData);
+          setCards(initialCards);
+        })
+        .catch(err => {
+          console.error('Ошибка при запросе к API:', err);
+        });
+    };
+
     tokenCheck();
+    fetchData(); // Вызов функции
   }, []);
 
   const handleEditAvatarClick = () => {
@@ -85,6 +83,14 @@ function App() {
 
   const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(!isAddPlacePopupOpen);
+  };
+
+  const handleLoginStatus = (status) => {
+    setLoginStatus(status);
+  };
+
+  const handleOpenStatus = () => {
+    setIsRegistrationPopupOpen(!isRegistrationPopupOpen);
   };
 
   const handleCardClick = (card) => {
@@ -164,6 +170,7 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setSelectedCard(false);
+    setIsRegistrationPopupOpen(false);
   };
 
   return (
@@ -186,7 +193,11 @@ function App() {
                 />
               ))}
               loggedIn={loggedIn} />} />
-            <Route path="sign-in" element={<Login updateEmail={updateEmail} handleLogin={handleLogin} />} />
+            <Route path="sign-in" element={<Login
+              handleLoginStatus={handleLoginStatus}
+              isOpen={handleOpenStatus}
+              updateEmail={updateEmail}
+              handleLogin={handleLogin} />} />
             <Route path="sign-up" element={<Register />} />
           </Routes>
           <Footer />
@@ -203,9 +214,11 @@ function App() {
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar} />
-        {/* <InfoToolTip 
-          isLoggedIn={loggedIn}
-          onClose={closeAllPopups} /> */}
+        <InfoToolTip
+          isOpen={isRegistrationPopupOpen}
+          onClose={closeAllPopups}
+          loginStatus={loginStatus}
+        />
       </CurrentUserContext.Provider>
       <PopupWithForm
         title="Вы уверены?"

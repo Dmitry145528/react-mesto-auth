@@ -27,19 +27,22 @@ function Login(props) {
       Auth.onLogin(password, email)
         .then((data) => {
           if (data.token) {
-            // Вызываем проверку токена для обновления данных пользователя
             Auth.checkToken(data.token).then((res) => {
               if (res) {
                 props.updateEmail(res.data.email);
                 props.handleLogin();
                 navigate('/', { replace: true });
+                props.isOpen();
+                props.handleLoginStatus(true); // Успешный вход
               }
             });
           }
         })
-        .catch(err => console.log(err));
-    } else {
-      return;
+        .catch(err => {
+          console.log(err);
+          props.isOpen();
+          props.handleLoginStatus(false); // Неудачный вход
+        });
     }
   }
 

@@ -24,11 +24,10 @@ function Register() {
     e.preventDefault();
     if (formValue.password && formValue.email) {
       const { password, email } = formValue;
-      Auth.register(password, email).then((res) => {
-        console.log(res);
-        navigate('/sign-in', { replace: true });
-      }
-      );
+      Auth.register(password, email)
+        .then(() => {
+          navigate("/sign-in", { replace: true });
+        });
     }
   }
 

@@ -13,7 +13,7 @@ import AddPlacePopup from './AddPlacePopup'
 import Login from './Login'
 import Register from './Register'
 import ProtectedRouteElement from './ProtectedRoute'
-import { checkToken } from './Auth'
+import { checkToken } from '../utils/Auth'
 import InfoToolTip from './InfoTooltip'
 import CurrentUserContext from '../contexts/CurrentUserContext'
 
@@ -47,7 +47,7 @@ function App() {
           console.error('Ошибка при запросе к API:', err);
         });
     };
-    // tokenCheck();
+
     fetchData(); // Вызов функции
   }, []);
 
@@ -64,7 +64,7 @@ function App() {
             if (res) {
               // авторизуем пользователя
               setEmail(res.data.email);
-              onLogin();
+              handleLogin();
               history('/');
             }
           });
@@ -73,7 +73,7 @@ function App() {
     }
 
     tokenCheck();
-  }, [loggedIn]);
+  }, []);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
@@ -151,9 +151,13 @@ function App() {
       })
   }
 
-  const onLogin = () => {
+  const handleLogin = () => {
     setLoggedIn(true);
   }
+
+  const updateEmail = (newEmail) => {
+    setEmail(newEmail);
+  };
 
   const closeAllPopups = () => {
     setIsEditAvatarPopupOpen(false);
@@ -182,7 +186,7 @@ function App() {
                 />
               ))}
               loggedIn={loggedIn} />} />
-            <Route path="sign-in" element={<Login onLogin={onLogin} />} />
+            <Route path="sign-in" element={<Login updateEmail={updateEmail} handleLogin={handleLogin} />} />
             <Route path="sign-up" element={<Register />} />
           </Routes>
           <Footer />

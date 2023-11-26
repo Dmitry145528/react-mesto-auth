@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react"
-import * as Auth from "./Auth"
+import * as Auth from "../utils/Auth"
 
 function Register() {
 

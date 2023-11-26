@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
-import * as Auth from "./Auth"
+import * as Auth from "../utils/Auth"
 
 function Login(props) {
 
@@ -27,9 +27,14 @@ function Login(props) {
       Auth.onLogin(password, email)
         .then((data) => {
           if (data.token) {
-            setFormValue({ password: '', email: '' });
-            props.onLogin();
-            navigate('/', { replace: true });
+            // Вызываем проверку токена для обновления данных пользователя
+            Auth.checkToken(data.token).then((res) => {
+              if (res) {
+                props.updateEmail(res.data.email);
+                props.handleLogin();
+                navigate('/', { replace: true });
+              }
+            });
           }
         })
         .catch(err => console.log(err));

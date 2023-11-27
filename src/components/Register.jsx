@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import * as Auth from "../utils/Auth"
 
-function Register() {
+function Register(props) {
 
   const [formValue, setFormValue] = useState({
     email: '',
@@ -25,11 +25,24 @@ function Register() {
     if (formValue.password && formValue.email) {
       const { password, email } = formValue;
       Auth.register(password, email)
-        .then(() => {
+      .then((res) => {
+        if (res.error) {
+          props.handleLoginStatus(false); // Неудачный вход
+          props.isOpen();
+        } else {
+          props.handleLoginStatus(true); // Успешный вход
+          props.isOpen();
           navigate("/sign-in", { replace: true });
-        });
-    }
+        }
+      })
+      .catch((err) => {
+        // Обработка ошибок, если они не были обработаны внутри .then()
+        console.log("Catch block:", err); // Выводим ошибку в консоль
+        props.handleLoginStatus(false); // Неудачный вход
+        props.isOpen();
+      });
   }
+}
 
   return (
     <div className="auth">

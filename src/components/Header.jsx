@@ -7,7 +7,7 @@ function Header(props) {
 	const location = useLocation();
 	const [currentPath, setCurrentPath] = useState(location.pathname);
 	const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false);
-	const history = useNavigate();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		setCurrentPath(location.pathname);
@@ -15,7 +15,7 @@ function Header(props) {
 
 	const onSignOut = () => {
 		localStorage.removeItem('token');
-		history('/sign-in');
+		navigate('/sign-in');
 	}
 
 	const handleBurgerClick = () => {
@@ -28,7 +28,7 @@ function Header(props) {
 		} else if (currentPath === "/sign-in") {
 			return "Регистрация";
 		}
-		// По умолчанию, возвращаем "Ошибка" для всех остальных случаев
+		// По умолчанию, возвращаем "Ошибка текста ссылки" для всех остальных случаев
 		return console.log("Ошибка текста ссылки");
 	};
 

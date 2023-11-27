@@ -31,9 +31,7 @@ function Login(props) {
               if (res) {
                 props.updateEmail(res.data.email);
                 props.handleLogin();
-                props.handleLoginStatus(true); // Успешный вход
                 navigate('/', { replace: true });
-                props.isOpen();
               }
             });
           }

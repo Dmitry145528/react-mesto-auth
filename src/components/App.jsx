@@ -31,7 +31,7 @@ function App() {
   const [email, setEmail] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
   const [loginStatus, setLoginStatus] = useState(null);
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Функция для выполнения запросов к API
@@ -47,7 +47,7 @@ function App() {
               // авторизуем пользователя
               setEmail(res.data.email);
               handleLogin();
-              history('/');
+              navigate('/');
             }
           });
         }
@@ -198,7 +198,9 @@ function App() {
               isOpen={handleOpenStatus}
               updateEmail={updateEmail}
               handleLogin={handleLogin} />} />
-            <Route path="sign-up" element={<Register />} />
+            <Route path="sign-up" element={<Register 
+              handleLoginStatus={handleLoginStatus}
+              isOpen={handleOpenStatus}/>} />
           </Routes>
           <Footer />
         </div>

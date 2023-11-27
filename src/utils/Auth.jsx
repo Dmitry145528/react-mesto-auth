@@ -9,10 +9,6 @@ const register = (password, email) => {
     body: JSON.stringify({ password, email })
   })
     .then((res => res.json()))
-    .then((res) => {
-      return res;
-    })
-    .catch((err) => console.log(err));
 }
 
 const onLogin = (password, email) => {

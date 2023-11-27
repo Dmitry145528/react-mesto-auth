@@ -8,6 +8,10 @@
     @import url('./blocks/header/__container/header__container.css');
     @import url('./blocks/header/__info/header__info.css');
     @import url('./blocks/header/__button/header__button.css');
+    @import url('./blocks/header/__button/_mobile/header__button_mobile.css');
+    @import url('./blocks/header/__button/_mobile/header__button_mobile-close.css');
+    @import url('./blocks/header/__container/_mobile/header__container_mobile.css');
+    @import url('./blocks/header/__container/_mobile/header__container_mobile-open.css');
 @import url('./blocks/profile/profile.css');
     @import url('./blocks/profile/__avatar/profile__avatar.css');
     @import url('./blocks/profile/__avatar-button/profile__avatar-button.css');
@@ -56,3 +60,4 @@
   @import url('./blocks/authentication/__caption-link/auth__caption-link.css');
   @import url('./blocks/infoTooltip/__container/infoTooltip__container.css');
   @import url('./blocks/infoTooltip/__title/infoTooltip__title.css');
+@import url('./blocks/rotation/rotation.css');

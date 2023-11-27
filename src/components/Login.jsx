@@ -31,17 +31,17 @@ function Login(props) {
               if (res) {
                 props.updateEmail(res.data.email);
                 props.handleLogin();
+                props.handleLoginStatus(true); // Успешный вход
                 navigate('/', { replace: true });
                 props.isOpen();
-                props.handleLoginStatus(true); // Успешный вход
               }
             });
           }
         })
         .catch(err => {
           console.log(err);
-          props.isOpen();
           props.handleLoginStatus(false); // Неудачный вход
+          props.isOpen();
         });
     }
   }

@@ -6,6 +6,7 @@ function Header(props) {
 
 	const location = useLocation();
 	const [currentPath, setCurrentPath] = useState(location.pathname);
+	const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false);
 	const history = useNavigate();
 
 	useEffect(() => {
@@ -16,6 +17,10 @@ function Header(props) {
 		localStorage.removeItem('token');
 		history('/sign-in');
 	}
+
+	const handleBurgerClick = () => {
+    setIsBurgerMenuOpen(!isBurgerMenuOpen);
+  };
 
 	const getLinkText = () => {
 		if (currentPath === "/sign-up") {
@@ -38,22 +43,32 @@ function Header(props) {
 	};
 
 	return (
-		<header className="header">
-			<img src={Logo} alt="Логотип в виде надписи Место Россия" className="header__logo" />
+		<>
 			{currentPath === "/" ? (
-				<div className="header__container">
+				<div className={isBurgerMenuOpen ? "header__container_mobile header__container_mobile-open" : "header__container_mobile"}>
 					<p className="header__info">{props.email}</p>
 					<button className="header__button" onClick={onSignOut}>
 						Выйти
 					</button>
-				</div>
-			) : (
-				<Link className="header__link" to={getLinkTo()}>
-					{getLinkText()}
-				</Link>
-			)}
-		</header>
-	);
+				</div>) : ('')
+			}
+			<header className="header">
+				<img src={Logo} alt="Логотип в виде надписи Место Россия" className="header__logo" />
+				{currentPath === "/" ? (<>
+					<div className="header__container">
+						<p className="header__info">{props.email}</p>
+						<button className="header__button" onClick={onSignOut}>
+							Выйти
+						</button>
+					</div>
+					<button className={`header__button ${isBurgerMenuOpen ? "header__button_mobile-close rotateClockwise" : "header__button_mobile rotateCounterClockwise"}`} onClick={handleBurgerClick} ></button></>
+				) : (
+					<Link className="header__link" to={getLinkTo()}>
+						{getLinkText()}
+					</Link>
+				)}
+			</header>
+		</>);
 }
 
 export default Header;

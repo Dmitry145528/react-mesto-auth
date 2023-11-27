@@ -47,7 +47,7 @@ function App() {
               // авторизуем пользователя
               setEmail(res.data.email);
               handleLogin();
-              navigate('/');
+              navigate('/', { replace: true });
             }
           });
         }

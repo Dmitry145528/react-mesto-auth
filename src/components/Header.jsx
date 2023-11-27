@@ -15,7 +15,7 @@ function Header(props) {
 
 	const onSignOut = () => {
 		localStorage.removeItem('token');
-		navigate('/sign-in');
+		navigate('/sign-in', { replace: true });
 	}
 
 	const handleBurgerClick = () => {

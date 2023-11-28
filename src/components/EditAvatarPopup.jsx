@@ -1,28 +1,33 @@
 import PopupWithForm from "./PopupWithForm"
-import { useRef, useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { useFormAndValidation } from '../hooks/useFormAndValidation'
 
 function EditAvatarPopup(props) {
   const [submitButtonText, setSubmitButtonText] = useState('Сохранить');
-  const inputRef = useRef();
+  const { values, handleChange, errors, isValid, resetForm } = useFormAndValidation();
 
   useEffect(() => {
     // Сброс полей при закрытии модального окна
     if (!props.isOpen) {
-      inputRef.current.value = '';
+      resetForm({ avatar: '' });
     }
-  }, [props.isOpen]);
+  }, [props.isOpen, resetForm]);
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    setSubmitButtonText('Сохранение...'); // Изменение текста кнопки при отправке формы
+    if (isValid) {
+      setSubmitButtonText('Сохранение...');
 
-    props.onUpdateAvatar({
-      avatar: inputRef.current.value,
-    })
-      .finally(() => {
-        setSubmitButtonText('Сохранить');
+      props.onUpdateAvatar({
+        avatar: values.avatar,
       })
+        .finally(() => {
+          setSubmitButtonText('Сохранить');
+        });
+    } else {
+      console.log('Форма невалидна, отправка данных отклонена.');
+    }
   }
 
   return (
@@ -32,15 +37,26 @@ function EditAvatarPopup(props) {
       button={submitButtonText}
       onSubmit={handleSubmit}
       isOpen={props.isOpen}
-      onClose={props.onClose}>
+      onClose={props.onClose}
+      isValid={isValid}
+    >
       <fieldset className="popup__contact-info">
         <div className="popup__field">
-          <input className="popup__input" ref={inputRef} placeholder='Ссылка на картинку' id="avatar-url" name="avatar" type="url" required />
-          <span className="avatar-url-error popup__input-error"></span>
+          <input
+            className="popup__input"
+            value={values.avatar || ''}
+            onChange={handleChange}
+            placeholder='Ссылка на картинку'
+            id="avatar-url"
+            name="avatar"
+            type="url"
+            required
+          />
+          <span className="avatar-url-error popup__input-error">{errors.avatar}</span>
         </div>
       </fieldset>
     </PopupWithForm>
   );
 }
 
-export default EditAvatarPopup
+export default EditAvatarPopup;

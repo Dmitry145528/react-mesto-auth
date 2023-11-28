@@ -1,27 +1,12 @@
 import { useNavigate } from "react-router-dom"
-import { useState } from "react"
+import AuthForm from "./AuthForm"
 import * as Auth from "../utils/Auth"
 
 function Login(props) {
 
-  const [formValue, setFormValue] = useState({
-    email: '',
-    password: ''
-  });
-
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setFormValue({
-      ...formValue,
-      [name]: value
-    });
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (formValue) => {
     if (formValue.password && formValue.email) {
       const { password, email } = formValue;
       Auth.onLogin(password, email)
@@ -37,7 +22,7 @@ function Login(props) {
           }
         })
         .catch(err => {
-          console.log(err);
+          console.log('Ошибка при запросе авторизации:', err);
           props.handleLoginStatus(false); // Неудачный вход
           props.isOpen();
         });
@@ -45,22 +30,12 @@ function Login(props) {
   }
 
   return (
-    <div className="auth">
-      <h2 className="popup__header auth__header">Вход</h2>
-      <form className="auth__form" onSubmit={handleSubmit}>
-        <fieldset className="popup__contact-info auth__contact-info">
-          <div className="auth__field">
-            <input className="popup__input auth__input" value={formValue.email} onChange={handleChange} id="email" placeholder="Email" name="email" type="email" required />
-            <span className="email-error popup__input-error"></span>
-          </div>
-          <div className="auth__field">
-            <input className="popup__input auth__input" value={formValue.password} onChange={handleChange} id="password" placeholder="Пароль" name="password" type="password" required />
-            <span className="password-error popup__input-error"></span>
-          </div>
-        </fieldset>
-        <button className="popup__button auth__button" aria-label="Кнопка с надписью войти">Войти</button>
-      </form>
-    </div>
+    <AuthForm
+      title="Вход"
+      onSubmit={handleSubmit}
+      buttonText="Войти"
+      linkTo="/sign-in"
+    />
   );
 }
 

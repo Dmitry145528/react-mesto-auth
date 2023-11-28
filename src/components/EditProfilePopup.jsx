@@ -1,44 +1,38 @@
 import { useState, useEffect, useContext } from 'react'
 import PopupWithForm from "./PopupWithForm"
 import CurrentUserContext from '../contexts/CurrentUserContext'
+import { useFormAndValidation } from '../hooks/useFormAndValidation'
 
 function EditProfilePopup(props) {
   const [submitButtonText, setSubmitButtonText] = useState('Сохранить');
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const { values, handleChange, errors, isValid, setValues } = useFormAndValidation();
 
   const currentUser = useContext(CurrentUserContext);
-
-  // Обработчик изменения инпута обновляет стейт
-  function handleChangeName(e) {
-    setName(e.target.value);
-  }
-
-  function handleChangeDescription(e) {
-    setDescription(e.target.value);
-  }
 
   // После загрузки текущего пользователя из API
   // его данные будут использованы в управляемых компонентах.
   useEffect(() => {
     if (currentUser.name && currentUser.about) {
-      setName(currentUser.name);
-      setDescription(currentUser.about);
+      setValues({ name: currentUser.name, about: currentUser.about });
     }
-  }, [currentUser, props.isOpen]);
+  }, [currentUser, props.isOpen, setValues]);
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    setSubmitButtonText('Сохранение...'); // Изменение текста кнопки при отправке формы
+    if (isValid) {
+      setSubmitButtonText('Сохранение...');
 
-    props.onUpdateUser({
-      name,
-      about: description,
-    })
-      .finally(() => {
-        setSubmitButtonText('Сохранить'); // Возвращение исходного текста кнопки после завершения запроса
-      });
+      props.onUpdateUser({
+        name: values.name,
+        about: values.about,
+      })
+        .finally(() => {
+          setSubmitButtonText('Сохранить');
+        });
+    } else {
+      console.log('Форма невалидна, отправка данных отклонена.');
+    }
   }
 
   return (
@@ -48,19 +42,43 @@ function EditProfilePopup(props) {
       button={submitButtonText}
       onSubmit={handleSubmit}
       isOpen={props.isOpen}
-      onClose={props.onClose}>
+      onClose={props.onClose}
+      isValid={isValid}
+    >
       <fieldset className="popup__contact-info">
         <div className="popup__field">
-          <input className="popup__input" id="name" placeholder="Имя и Фамилия" name="name" type="text" minLength="2" maxLength="40" required value={name} onChange={handleChangeName} />
-          <span className="name-error popup__input-error"></span>
+          <input
+            className="popup__input"
+            id="name"
+            placeholder="Имя и Фамилия"
+            name="name"
+            type="text"
+            minLength="2"
+            maxLength="40"
+            required
+            value={values.name || ''}
+            onChange={handleChange}
+          />
+          <span className="name-error popup__input-error">{errors.name}</span>
         </div>
         <div className="popup__field">
-          <input className="popup__input" id="activity" placeholder="Деятельность" name="about" type="text" minLength="2" maxLength="200" required value={description} onChange={handleChangeDescription} />
-          <span className="activity-error popup__input-error"></span>
+          <input
+            className="popup__input"
+            id="activity"
+            placeholder="Деятельность"
+            name="about"
+            type="text"
+            minLength="2"
+            maxLength="200"
+            required
+            value={values.about || ''}
+            onChange={handleChange}
+          />
+          <span className="activity-error popup__input-error">{errors.about}</span>
         </div>
       </fieldset>
     </PopupWithForm>
   );
 }
 
-export default EditProfilePopup
+export default EditProfilePopup;

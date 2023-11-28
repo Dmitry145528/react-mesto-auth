@@ -49,7 +49,10 @@ function App() {
               handleLogin();
               navigate('/', { replace: true });
             }
-          });
+          })
+            .catch(err => {
+              console.error('Ошибка при запросе токена:', err);
+            });
         }
       }
     }
@@ -198,9 +201,9 @@ function App() {
               isOpen={handleOpenStatus}
               updateEmail={updateEmail}
               handleLogin={handleLogin} />} />
-            <Route path="sign-up" element={<Register 
+            <Route path="sign-up" element={<Register
               handleLoginStatus={handleLoginStatus}
-              isOpen={handleOpenStatus}/>} />
+              isOpen={handleOpenStatus} />} />
           </Routes>
           <Footer />
         </div>

@@ -54,6 +54,7 @@
 @import url('./blocks/authentication/auth.css');
   @import url('./blocks/authentication/__header/auth__header.css');
   @import url('./blocks/authentication/__contact-info/auth__contact-info.css');
+  @import url('./blocks/authentication/__field/auth__field.css');
   @import url('./blocks/authentication/__input/auth__input.css');
   @import url('./blocks/authentication/__button/auth__button.css');
   @import url('./blocks/authentication/__caption/auth____caption.css');

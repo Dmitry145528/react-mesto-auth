@@ -19,8 +19,8 @@ function Header(props) {
 	}
 
 	const handleBurgerClick = () => {
-    setIsBurgerMenuOpen(!isBurgerMenuOpen);
-  };
+		setIsBurgerMenuOpen(!isBurgerMenuOpen);
+	};
 
 	const getLinkText = () => {
 		if (currentPath === "/sign-up") {
@@ -61,7 +61,7 @@ function Header(props) {
 							Выйти
 						</button>
 					</div>
-					<button className={`header__button ${isBurgerMenuOpen ? "header__button_mobile-close rotateClockwise" : "header__button_mobile rotateCounterClockwise"}`} onClick={handleBurgerClick} ></button></>
+					<button className={`header__button ${isBurgerMenuOpen ? "header__button_mobile-close rotateClockwise" : "header__button_mobile rotateCounterClockwise"}`} onClick={handleBurgerClick}></button></>
 				) : (
 					<Link className="header__link" to={getLinkTo()}>
 						{getLinkText()}
